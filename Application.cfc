@@ -19,6 +19,9 @@ component {
 
 		application.channel = application.connection.createChannel();
 
+		application.dsn = "test";
+		application.utils = new utils();
+
 	}
 
 	function onRequestStart() {

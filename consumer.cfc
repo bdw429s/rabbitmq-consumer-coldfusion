@@ -6,6 +6,9 @@ component accessors="true" {
 	) {
 		variables.channel = arguments.channel;
 		variables.consumerTag = arguments.consumerTag;
+
+		variables.app = application; // ref to Application scope
+
 		return this;
 	}
 
@@ -23,6 +26,27 @@ component accessors="true" {
 		// blocks to handle and log errors properly.
 		// Meanwhilte Server scope is available and can be used to
 		// share data between your application and consumer.
+
+		// We can have access to Application scope by reference
+		writeLog(
+			file = "test",
+			type = "information",
+			text = "#variables.app.dsn#"
+		);
+
+		// But not inside any other component
+		// I think in Lucee you can use something like
+		// getPageContext().setApplicationContext(variables.app);
+		// and it should solve the problem, but not in ACF
+		try {
+			variables.app.utils.process(message);
+		} catch(any e) {
+			writeLog(
+				file = "test",
+				type = "error",
+				text = "#e.Message#"
+			);
+		}
 
 		var props = createObject("java", "com.rabbitmq.client.AMQP$BasicProperties")
 			.builder()
@@ -54,6 +78,7 @@ component accessors="true" {
 		} catch(any e) {
 			writeLog(
 				file = "test",
+				type = "error",
 				text = "#e.Message#"
 			);
 		}
