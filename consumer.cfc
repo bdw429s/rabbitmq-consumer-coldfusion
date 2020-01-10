@@ -17,6 +17,13 @@ component accessors="true" {
 	) {
 		var message = charsetEncode(arguments.body, "utf-8");
 
+		// Here we have no access to Application or Request scope
+		// as we are running in detached Java Runnable thread.
+		// Also ColdFusion won't handle any exceptions, so use <cftry>
+		// blocks to handle and log errors properly.
+		// Meanwhilte Server scope is available and can be used to
+		// share data between your application and consumer.
+
 		var props = createObject("java", "com.rabbitmq.client.AMQP$BasicProperties")
 			.builder()
 			.contentType("application/json")
