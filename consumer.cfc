@@ -26,7 +26,7 @@ component accessors="true" {
 		// basicPublish(String exchange, String routingKey, AMQP.BasicProperties props, byte[] body)
 
 		// this will work
-		channel.basicPublish(
+		variables.channel.basicPublish(
 			"",
 			"test-b",
 			javaCast("null", true), // no message properties
@@ -38,7 +38,7 @@ component accessors="true" {
 		// due to props class "AMQP$BasicProperties"
 		// while library requires "AMQP.BasicProperties"
 		try {
-			channel.basicPublish(
+			variables.channel.basicPublish(
 				"",
 				"test-b",
 				props, // with message properties
